@@ -18,6 +18,7 @@ class PokemonListViewController: UIViewController {
     var offset = 0
     var limit = 30
     var page = 0
+    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,6 +40,10 @@ class PokemonListViewController: UIViewController {
            }
        }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let vc = segue.destination as! PokemonDetailViewController
+        vc.pokemonData = pokemonListData[pokemonListTableView.indexPathForSelectedRow!.row]
+    }
 
 }
 

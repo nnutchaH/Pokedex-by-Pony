@@ -19,10 +19,8 @@ class PokemonRequest {
             .pokemonList(offset: offset, limit: limit)) { result in
                 switch result {
                 case .success(let response):
-                    let jsonDecoder = JSONDecoder()
-                    jsonDecoder.dateDecodingStrategy = .iso8601
                     do {
-                        let data = try jsonDecoder.decode(PokemonList.self, from: response.data)
+                        let data = try JSONDecoder().decode(PokemonList.self, from: response.data)
                         callback?(.success(data))
                     } catch {
                         callback?(.failure(error))
@@ -36,13 +34,11 @@ class PokemonRequest {
         func requestPokemonDetail(name: String, callback: ((Result<PokemonDetail, Error>) -> Void)?) {
             provider
                 .request(
-                .getPokemonDetail(name: name)) { result in
+                .getPokemonName(name: name)) { result in
                     switch result {
                     case .success(let response):
-                        let jsonDecoder = JSONDecoder()
-                        jsonDecoder.dateDecodingStrategy = .iso8601
                         do {
-                            let data = try jsonDecoder.decode(PokemonDetail.self, from: response.data)
+                            let data = try JSONDecoder().decode(PokemonDetail.self, from: response.data)
                             callback?(.success(data))
                         } catch {
                             callback?(.failure(error))
@@ -52,5 +48,5 @@ class PokemonRequest {
                     }
             }
         }
-        
+
 }

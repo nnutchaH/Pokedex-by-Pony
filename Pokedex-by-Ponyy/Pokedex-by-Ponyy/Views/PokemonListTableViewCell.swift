@@ -16,8 +16,6 @@ class PokemonListTableViewCell: UITableViewCell {
     @IBOutlet weak var pokemonName: UILabel!
     
     func setupPokemonListUI(pokemonList: PokemonData) {
-        let url = URL(string: pokemonList.url)
-        pokemonImage.kf.setImage(with: url)
         pokemonName.text = pokemonList.name
     }
     
