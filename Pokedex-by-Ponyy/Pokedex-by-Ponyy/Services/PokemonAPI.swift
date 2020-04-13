@@ -25,8 +25,8 @@ extension PokemonAPI: TargetType {
         switch self {
         case .pokemonList:
             return "/v2/pokemon/"
-        case .getPokemonName:
-            return "/v2/pokemon/"
+        case .getPokemonName(let name):
+            return "/v2/pokemon/\(name)"
         }
     }
     
@@ -38,8 +38,8 @@ extension PokemonAPI: TargetType {
         switch self {
         case let.pokemonList(offset, limit):
             return .requestParameters(parameters: ["offset": offset, "limit": limit], encoding: URLEncoding.queryString)
-        case let.getPokemonName(name):
-            return .requestParameters(parameters: ["name" : name], encoding: URLEncoding.queryString)
+        case .getPokemonName:
+            return .requestPlain
         }
     }
     
