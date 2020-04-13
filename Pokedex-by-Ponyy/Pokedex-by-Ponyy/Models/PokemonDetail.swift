@@ -12,13 +12,15 @@ struct PokemonDetail: Codable {
     let id: Int
     let name: String
     let height: Int
-    let weight: Int
-    let base_experience: Int
     let sprites: PokemonSprites
     let stats:[PokemonStats]
+    let types: [TypeElement]
+    let weight: Int
 }
 
 struct PokemonSprites: Codable {
+    let back_default: String
+    let back_shiny: String
     let front_shiny: String
     let front_default: String
 }
@@ -30,6 +32,16 @@ struct PokemonStats: Codable {
 }
 
 struct nameStat: Codable {
+    let name: String
+    let url: String
+}
+
+struct TypeElement: Codable {
+    let slot: Int
+    let type: Species
+}
+
+struct Species: Codable {
     let name: String
     let url: String
 }
