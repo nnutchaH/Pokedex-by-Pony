@@ -10,11 +10,17 @@ import UIKit
 
 class PokemonListViewController: UIViewController {
     
+    @IBOutlet weak var searchPokemon: UISearchBar!
     @IBOutlet weak var pokemonListTableView: UITableView!
     @IBOutlet weak var loadingView: UIActivityIndicatorView!
     
+    private var filteredPokemonListData: [PokemonData] = [] {
+        didSet { didSetfilteredPokemonListData(oldValue) } }
+    private var pokemonListData: [PokemonData] = [] {
+        didSet { didSetPokemonListData(oldValue) } }
+    
+    var inSearchMode = false
     let pokemonRequest = PokemonRequest()
-    var pokemonListData: [PokemonData] = []
     var offset = 0
     var limit = 30
     var page = 0
@@ -39,9 +45,27 @@ class PokemonListViewController: UIViewController {
         }
     }
     
+    private func didSetPokemonListData(_ oldValue: [PokemonData]) {
+        pokemonListTableView.reloadData()
+    }
+    
+    private func didSetfilteredPokemonListData(_ oldValue: [PokemonData]) {
+        pokemonListTableView.reloadData()
+    }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let vc = segue.destination as! PokemonDetailViewController
-        vc.pokemonData = pokemonListData[pokemonListTableView.indexPathForSelectedRow!.row]
+        if let selectedPokemonAtIndex = pokemonListTableView.indexPathForSelectedRow?.row {
+            let pokemonList: PokemonData
+            
+            if (searchPokemon.text ?? "").isEmpty {
+                pokemonList = pokemonListData[selectedPokemonAtIndex]
+            } else {
+                pokemonList = filteredPokemonListData[selectedPokemonAtIndex]
+            }
+            
+            let destinationViewController = segue.destination as? PokemonDetailViewController
+            destinationViewController?.pokemonData = pokemonList
+        }
     }
     
 }
@@ -49,17 +73,33 @@ class PokemonListViewController: UIViewController {
 extension PokemonListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return pokemonListData.count
+        if (searchPokemon.text ?? "").isEmpty {
+            return pokemonListData.count
+        } else {
+            return filteredPokemonListData.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonListTableViewCell", for: indexPath) as? PokemonListTableViewCell {
+            let pokemonList: PokemonData
+            let pokemonId: Int
+            
+            if searchPokemon.text?.isEmpty == true {
+                pokemonList = pokemonListData[indexPath.row]
+                pokemonId = indexPath.row + 1
+            } else {
+                pokemonList = filteredPokemonListData[indexPath.row]
+                pokemonId = indexPath.row + 1
+            }
+            
+            cell.setupPokemonListUI(pokemonList: pokemonList, pokemonId: pokemonId)
+            
+            return cell
+        }  else {
+            fatalError()
+        }
         
-        let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonListTableViewCell", for: indexPath) as! PokemonListTableViewCell
-        let pokemonList = pokemonListData[indexPath.row]
-        let pokemonId = indexPath.row + 1
-        cell.setupPokemonListUI(pokemonList: pokemonList, pokemonId: pokemonId)
-        
-        return cell
     }
     
 }
@@ -73,5 +113,20 @@ extension PokemonListViewController: UITableViewDelegate {
                 .requestPokemonList(offset: offset, limit: limit, callback: { [weak self] in
                     self?.handleResponse(result: $0) })
         }
+    }
+    
+}
+
+extension PokemonListViewController: UISearchBarDelegate {
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        handleSearchLogic(from: searchText)
+    }
+}
+
+extension PokemonListViewController {
+    
+    func handleSearchLogic(from searchText: String) {
+        filteredPokemonListData = pokemonListData.filter { $0.name.lowercased().hasPrefix(searchText.lowercased()) }
     }
 }

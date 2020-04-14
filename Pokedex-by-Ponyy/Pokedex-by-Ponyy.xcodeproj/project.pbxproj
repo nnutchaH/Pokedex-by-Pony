@@ -136,6 +136,7 @@
 				41560DA02440517A00D9D880 /* Models */,
 				41560DA32440761F00D9D880 /* Services */,
 				41560DA4244076AE00D9D880 /* Views */,
+				4158C8B22445F5E100E5C11C /* View Model */,
 			);
 			path = "Pokedex-by-Ponyy";
 			sourceTree = "<group>";
@@ -185,6 +186,13 @@
 				41560D68244042D800D9D880 /* Main.storyboard */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		4158C8B22445F5E100E5C11C /* View Model */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "View Model";
 			sourceTree = "<group>";
 		};
 		772D4ED1F93D8B71FF2AD578 /* Pods */ = {
