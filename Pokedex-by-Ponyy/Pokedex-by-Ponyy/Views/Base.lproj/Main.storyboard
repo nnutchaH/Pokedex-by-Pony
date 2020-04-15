@@ -21,6 +21,9 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <color key="barTintColor" red="0.69444666749999995" green="0.33178393810000001" blue="0.27698411109999999" alpha="1" colorSpace="custom" customColorSpace="displayP3"/>
                                 <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="6Nj-q3-7jB"/>
+                                </connections>
                             </searchBar>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="A3N-RV-ecT">
                                 <rect key="frame" x="0.0" y="144" width="414" height="718"/>
@@ -466,6 +469,7 @@
                         <outlet property="atLabel" destination="8lu-lh-sPg" id="eb0-6V-kor"/>
                         <outlet property="backImage" destination="7S6-5S-GFx" id="yaN-V2-Y8I"/>
                         <outlet property="backShinyImage" destination="qzk-Ij-IfZ" id="3SE-eg-KKo"/>
+                        <outlet property="detailScrollView" destination="w5f-3a-HMM" id="Aag-vO-9xR"/>
                         <outlet property="dfLabel" destination="WPX-gA-jml" id="Vha-K0-GMe"/>
                         <outlet property="frontImage" destination="Gjf-ee-Xw4" id="JRX-CI-bzu"/>
                         <outlet property="frontShinyImage" destination="0BL-oE-0St" id="vze-id-yWk"/>
