@@ -11,6 +11,7 @@ import UIKit
 
 class PokemonDetailViewController: UIViewController {
     
+    @IBOutlet weak var detailScrollView: UIScrollView!
     @IBOutlet weak var pokemonName: UILabel!
     @IBOutlet weak var pokemonImage: UIImageView!
     @IBOutlet weak var frontImage: UIImageView!
@@ -26,7 +27,7 @@ class PokemonDetailViewController: UIViewController {
     @IBOutlet weak var idLabel: UILabel!
     @IBOutlet weak var typeLabel: UILabel!
     
-    
+    let refreshDetailControl = UIRefreshControl()
     let pokemonRequest = PokemonRequest()
     var pokemonData: PokemonData!
     var pokemonDetail: PokemonDetail!
@@ -35,6 +36,7 @@ class PokemonDetailViewController: UIViewController {
         super.viewDidLoad()
         pokemonRequest.requestPokemonDetail(name: pokemonData.name, callback: { [weak self] in
         self?.handleResponse(result: $0) })
+        addRefreshDetailControl()
 
     }
     
@@ -49,6 +51,22 @@ class PokemonDetailViewController: UIViewController {
         }
     }
 
+    private func addRefreshDetailControl() {
+        refreshDetailControl.tintColor = .darkGray
+        refreshDetailControl.addTarget(self, action: #selector(refreshPokemonDetailData), for: .valueChanged)
+        detailScrollView.refreshControl = refreshDetailControl
+    }
+    
+    @objc private func refreshPokemonDetailData(_ sender: Any) {
+        fetchPokemonDetailData()
+    }
+    
+    private func fetchPokemonDetailData() {
+        pokemonRequest.requestPokemonDetail(name: pokemonData.name, callback: { [weak self] in
+        self?.handleResponse(result: $0) })
+        self.refreshDetailControl.endRefreshing()
+    }
+    
     func setupPokemonListUI() {
         
         let urlFront = URL(string: pokemonDetail!.sprites.front_default)

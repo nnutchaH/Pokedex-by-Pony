@@ -15,11 +15,12 @@ class PokemonListTableViewCell: UITableViewCell {
     @IBOutlet weak var pokemonImage: UIImageView!
     @IBOutlet weak var pokemonName: UILabel!
     
-    func setupPokemonListUI(pokemonList: PokemonData,pokemonId: Int) {
+    func setupPokemonListUI(pokemonList: PokemonData) {
         
         pokemonName.text = pokemonList.name
-        
-        let urlImage = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + "\(pokemonId).png")
+        let urlId = URL(string: pokemonList.url)
+        let id = (urlId?.lastPathComponent)!
+        let urlImage = URL(string: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/" + id + ".png")
         pokemonImage.kf.setImage(with: urlImage)
         
     }

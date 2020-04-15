@@ -18,8 +18,8 @@ class PokemonListViewController: UIViewController {
         didSet { didSetfilteredPokemonListData(oldValue) } }
     private var pokemonListData: [PokemonData] = [] {
         didSet { didSetPokemonListData(oldValue) } }
-    
-    var inSearchMode = false
+    private let refreshListControl = UIRefreshControl()
+
     let pokemonRequest = PokemonRequest()
     var offset = 0
     var limit = 30
@@ -30,6 +30,7 @@ class PokemonListViewController: UIViewController {
         pokemonRequest
             .requestPokemonList(offset: offset, limit: limit, callback: { [weak self] in
                 self?.handleResponse(result: $0) })
+        addRefreshListControl()
     }
     
     private func handleResponse(result: Result<PokemonList, Error>) {
@@ -51,6 +52,27 @@ class PokemonListViewController: UIViewController {
     
     private func didSetfilteredPokemonListData(_ oldValue: [PokemonData]) {
         pokemonListTableView.reloadData()
+    }
+    
+    private func addRefreshListControl() {
+        refreshListControl.tintColor = .darkGray
+        refreshListControl.addTarget(self, action: #selector(refreshPokemonListData(_:)), for: .valueChanged)
+        pokemonListTableView.refreshControl = refreshListControl
+    }
+    
+    @objc private func refreshPokemonListData(_ sender: Any) {
+        fetchPokemonListData()
+    }
+    
+    private func fetchPokemonListData() {
+        pokemonListData = []
+        offset = 0
+        limit = 30
+        pokemonRequest
+        .requestPokemonList(offset: offset, limit: limit, callback: { [weak self] in
+            self?.handleResponse(result: $0) })
+        self.refreshListControl.endRefreshing()
+        self.pokemonListTableView.reloadData()
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -82,18 +104,16 @@ extension PokemonListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonListTableViewCell", for: indexPath) as? PokemonListTableViewCell {
+            
             let pokemonList: PokemonData
-            let pokemonId: Int
             
             if searchPokemon.text?.isEmpty == true {
                 pokemonList = pokemonListData[indexPath.row]
-                pokemonId = indexPath.row + 1
             } else {
                 pokemonList = filteredPokemonListData[indexPath.row]
-                pokemonId = indexPath.row + 1
             }
             
-            cell.setupPokemonListUI(pokemonList: pokemonList, pokemonId: pokemonId)
+            cell.setupPokemonListUI(pokemonList: pokemonList)
             
             return cell
         }  else {
@@ -119,14 +139,17 @@ extension PokemonListViewController: UITableViewDelegate {
 
 extension PokemonListViewController: UISearchBarDelegate {
     
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    func searchBar(_ searchPokemon: UISearchBar, textDidChange searchText: String) {
         handleSearchLogic(from: searchText)
+        pokemonListTableView.reloadData()
     }
 }
 
 extension PokemonListViewController {
     
     func handleSearchLogic(from searchText: String) {
-        filteredPokemonListData = pokemonListData.filter { $0.name.lowercased().hasPrefix(searchText.lowercased()) }
+        filteredPokemonListData = pokemonListData.filter ({ $0.name.range(of: searchText.lowercased()) != nil })
+        pokemonListTableView.reloadData()
+        
     }
 }
