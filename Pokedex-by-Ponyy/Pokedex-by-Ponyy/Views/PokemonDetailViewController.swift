@@ -29,28 +29,28 @@ class PokemonDetailViewController: UIViewController {
     
     let refreshDetailControl = UIRefreshControl()
     let pokemonRequest = PokemonRequest()
-    var pokemonData: PokemonData!
-    var pokemonDetail: PokemonDetail!
-   
+    let pokemonDetailViewModel = PokemonDetailViewModel()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        pokemonRequest.requestPokemonDetail(name: pokemonData.name, callback: { [weak self] in
-        self?.handleResponse(result: $0) })
+        getPokemonDetail()
         addRefreshDetailControl()
-
     }
     
-    private func handleResponse(result: Result<PokemonDetail, Error>) {
-        switch result {
-        case .success(let data):
-            pokemonDetail = data.self
-            self.setupPokemonListUI()
-            
-        case .failure(let error):
-            print("error: \(error)")
-        }
+    func getPokemonDetail()  {
+        pokemonDetailViewModel.getPokemonDetailData()
+        closureSetUp()
     }
-
+    
+    func closureSetUp()  {
+        pokemonDetailViewModel.reloadDetail = { [weak self] ()  in
+            self?.setupPokemonListUI()
+        }
+        //        pokemonDetailViewModel.errorMessage = { [weak self] (message)  in
+        //            print(message)
+        //        }
+    }
+    
     private func addRefreshDetailControl() {
         refreshDetailControl.tintColor = .darkGray
         refreshDetailControl.addTarget(self, action: #selector(refreshPokemonDetailData), for: .valueChanged)
@@ -58,23 +58,18 @@ class PokemonDetailViewController: UIViewController {
     }
     
     @objc private func refreshPokemonDetailData(_ sender: Any) {
-        fetchPokemonDetailData()
-    }
-    
-    private func fetchPokemonDetailData() {
-        pokemonRequest.requestPokemonDetail(name: pokemonData.name, callback: { [weak self] in
-        self?.handleResponse(result: $0) })
+        pokemonDetailViewModel.fetchPokemonListData()
         self.refreshDetailControl.endRefreshing()
     }
     
-    func setupPokemonListUI() {
+    private func setupPokemonListUI() {
         
-        let urlFront = URL(string: pokemonDetail!.sprites.front_default)
-        let urlBack = URL(string: pokemonDetail!.sprites.back_default)
-        let urlFrontShiny = URL(string: pokemonDetail!.sprites.front_shiny)
-        let urlBackShiny = URL(string: pokemonDetail!.sprites.back_shiny)
+        let urlFront = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.front_default)
+        let urlBack = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.back_default)
+        let urlFrontShiny = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.front_shiny)
+        let urlBackShiny = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.back_shiny)
         
-        pokemonName.text = pokemonDetail.name
+        pokemonName.text = pokemonDetailViewModel.pokemonDetail.name
         
         pokemonImage.kf.setImage(with: urlFront)
         frontImage.kf.setImage(with: urlFront)
@@ -82,13 +77,14 @@ class PokemonDetailViewController: UIViewController {
         frontShinyImage.kf.setImage(with: urlFrontShiny)
         backShinyImage.kf.setImage(with: urlBackShiny)
         
-        hpLabel.text = String(pokemonDetail.stats[0].base_stat)
-        atLabel.text = String(pokemonDetail.stats[1].base_stat)
-        dfLabel.text = String(pokemonDetail.stats[2].base_stat)
-        spLabel.text = String(pokemonDetail.stats[5].base_stat)
-        heightLabel.text = String(pokemonDetail.height)
-        weightLabel.text = String(pokemonDetail.weight)
-        idLabel.text = String(pokemonDetail.id)
-        typeLabel.text = pokemonDetail.types[0].type.name
+        hpLabel.text = String(pokemonDetailViewModel.pokemonDetail.stats[0].base_stat)
+        atLabel.text = String(pokemonDetailViewModel.pokemonDetail.stats[1].base_stat)
+        dfLabel.text = String(pokemonDetailViewModel.pokemonDetail.stats[2].base_stat)
+        spLabel.text = String(pokemonDetailViewModel.pokemonDetail.stats[5].base_stat)
+        heightLabel.text = String(pokemonDetailViewModel.pokemonDetail.height)
+        weightLabel.text = String(pokemonDetailViewModel.pokemonDetail.weight)
+        idLabel.text = String(pokemonDetailViewModel.pokemonDetail.id)
+        typeLabel.text = pokemonDetailViewModel.pokemonDetail.types[0].type.name
     }
+    
 }
