@@ -29,7 +29,7 @@
                                 <rect key="frame" x="0.0" y="144" width="414" height="718"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="PokemonListTableViewCell" id="xrJ-QQ-H5Y" customClass="PokemonListTableViewCell" customModule="Pokedex_by_Ponyy" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="PokemonListTableViewCell" id="xrJ-QQ-H5Y" customClass="PokemonListTableViewCell" customModule="Pokedex_by_Ponyy" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="104.33333587646484"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="xrJ-QQ-H5Y" id="IU4-gO-aeA">
