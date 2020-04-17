@@ -11,11 +11,11 @@ import Foundation
 class PokemonDetailViewModel {
     
     var request = PokemonRequest()
-    var reloadDetail = {() -> () in }
-    var errorMessage = {(message : String) -> () in }
     var pokemonData: PokemonData!
     var pokemonDetail: PokemonDetail! {
         didSet { reloadDetail() } }
+    var reloadDetail = {() -> () in }
+    var errorMessage = {(message : String) -> () in }
     
     func getPokemonDetailData() {
         self.request.requestPokemonDetail(name: pokemonData.name ) { result in
@@ -25,7 +25,6 @@ class PokemonDetailViewModel {
             case .failure(let error):
                 print("error: \(error)")
             }
-            
         }
     }
     

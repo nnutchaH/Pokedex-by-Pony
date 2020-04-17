@@ -82,9 +82,7 @@ extension PokemonListViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let cell = tableView.dequeueReusableCell(withIdentifier: "PokemonListTableViewCell", for: indexPath) as? PokemonListTableViewCell {
-            
             let pokemonList: PokemonData
-            
             if searchPokemon.text?.isEmpty == true {
                 pokemonList = pokemonListViewModel.pokemonData[indexPath.row]
             } else {
@@ -95,7 +93,6 @@ extension PokemonListViewController: UITableViewDataSource {
         }  else {
             fatalError()
         }
-        
     }
     
 }
@@ -117,5 +114,6 @@ extension PokemonListViewController: UISearchBarDelegate {
         pokemonListViewModel.searchBar(from: searchText)
         pokemonListTableView.reloadData()
     }
+    
 }
 

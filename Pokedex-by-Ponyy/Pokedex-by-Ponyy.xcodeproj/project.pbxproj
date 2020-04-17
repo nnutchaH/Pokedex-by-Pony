@@ -132,15 +132,15 @@
 		41560D61244042D800D9D880 /* Pokedex-by-Ponyy */ = {
 			isa = PBXGroup;
 			children = (
+				41560DA02440517A00D9D880 /* Models */,
+				41560DA32440761F00D9D880 /* Services */,
+				4158C8B22445F5E100E5C11C /* View Model */,
+				41560DA4244076AE00D9D880 /* Views */,
 				41560D62244042D800D9D880 /* AppDelegate.swift */,
 				41560D64244042D800D9D880 /* SceneDelegate.swift */,
 				41560D6B244042DB00D9D880 /* Assets.xcassets */,
 				41560D6D244042DB00D9D880 /* LaunchScreen.storyboard */,
 				41560D70244042DB00D9D880 /* Info.plist */,
-				41560DA02440517A00D9D880 /* Models */,
-				41560DA32440761F00D9D880 /* Services */,
-				41560DA4244076AE00D9D880 /* Views */,
-				4158C8B22445F5E100E5C11C /* View Model */,
 			);
 			path = "Pokedex-by-Ponyy";
 			sourceTree = "<group>";
@@ -657,7 +657,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com..Pokedex-by-Ponyy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -676,7 +676,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com..Pokedex-by-Ponyy";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

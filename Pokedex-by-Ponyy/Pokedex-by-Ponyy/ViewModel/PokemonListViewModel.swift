@@ -10,16 +10,16 @@ import Foundation
 
 class PokemonListViewModel {
     
-    var request = PokemonRequest()
+    let request = PokemonRequest()
     var offset = 0
     var limit = 30
     var page = 0
-    var reloadList = {() -> () in }
-    var errorMessage = {(message : String) -> () in }
+    var inSearchMode = false
     var pokemonData: [PokemonData] = [] {
         didSet { reloadList() } }
     var filterPokemonData = [PokemonData]()
-    var inSearchMode = false
+    var reloadList = {() -> () in }
+    var errorMessage = {(message : String) -> () in }
     
     func getPokemonListData() {
         self.request.requestPokemonList(offset: offset, limit: limit) { result in

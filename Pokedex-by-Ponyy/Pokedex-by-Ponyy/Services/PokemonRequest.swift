@@ -30,23 +30,23 @@ class PokemonRequest {
                 }
         }
     }
-        
-        func requestPokemonDetail(name: String, callback: ((Result<PokemonDetail, Error>) -> Void)?) {
-            provider
-                .request(
-                .getPokemonName(name: name)) { result in
-                    switch result {
-                    case .success(let response):
-                        do {
-                            let data = try JSONDecoder().decode(PokemonDetail.self, from: response.data)
-                            callback?(.success(data))
-                        } catch {
-                            callback?(.failure(error))
-                        }
-                    case .failure(let error):
+    
+    func requestPokemonDetail(name: String, callback: ((Result<PokemonDetail, Error>) -> Void)?) {
+        provider
+            .request(
+            .getPokemonName(name: name)) { result in
+                switch result {
+                case .success(let response):
+                    do {
+                        let data = try JSONDecoder().decode(PokemonDetail.self, from: response.data)
+                        callback?(.success(data))
+                    } catch {
                         callback?(.failure(error))
                     }
-            }
+                case .failure(let error):
+                    callback?(.failure(error))
+                }
         }
-
+    }
+    
 }
