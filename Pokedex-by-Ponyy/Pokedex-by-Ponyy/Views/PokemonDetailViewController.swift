@@ -37,18 +37,18 @@ class PokemonDetailViewController: UIViewController {
         addRefreshDetailControl()
     }
     
-    func getPokemonDetail()  {
+    private func getPokemonDetail()  {
         pokemonDetailViewModel.getPokemonDetailData()
         closureSetUp()
     }
     
-    func closureSetUp()  {
-        pokemonDetailViewModel.reloadDetail = { [weak self] ()  in
+    private func closureSetUp()  {
+        pokemonDetailViewModel.reloadDetail = { [weak self]()  in
             self?.setupPokemonListUI()
         }
-        //        pokemonDetailViewModel.errorMessage = { [weak self] (message)  in
-        //            print(message)
-        //        }
+        pokemonDetailViewModel.errorMessage = { (message)  in
+            print(message)
+        }
     }
     
     private func addRefreshDetailControl() {
@@ -63,7 +63,6 @@ class PokemonDetailViewController: UIViewController {
     }
     
     private func setupPokemonListUI() {
-        
         let urlFront = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.front_default)
         let urlBack = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.back_default)
         let urlFrontShiny = URL(string: pokemonDetailViewModel.pokemonDetail.sprites.front_shiny)
